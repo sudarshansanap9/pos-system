@@ -1,5 +1,6 @@
 <?php 
 require '../config/function.php';
+require 'authetication.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

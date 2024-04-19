@@ -8,6 +8,16 @@
                                 Dashboard
                             </a>
 
+                            <a class="nav-link" href="order-create.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                                Create Order
+                            </a>
+
+                            <a class="nav-link" href="orders.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                                Orders
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             
                             <a class="nav-link collapsed" href="#" 
@@ -42,6 +52,23 @@
                             <div class="sb-sidenav-menu-heading">Manage Users</div>
                             
                             
+                            <a class="nav-link collapsed" href="#" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapseCustomer"
+                                aria-expanded="false" aria-controls="collapseCustomer">
+
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Customer
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseCustomer" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="customers-create.php">Add Customer</a>
+                                    <a class="nav-link" href="customers.php">View Customers</a>
+                                </nav>
+                            </div>
+
+
                             <a class="nav-link collapsed" href="#" 
                                 data-bs-toggle="collapse" 
                                 data-bs-target="#collapseAdmins"

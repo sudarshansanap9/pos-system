@@ -178,4 +178,134 @@ if(isset($_POST["saveProduct"]))
         redirect("products-create.php","Something Went Wrong!.");
     }
 }
+
+if(isset($_POST["updateProduct"]))
+{
+    $product_id = validate($_POST['product_id']);
+
+    $productData = getById('products', $product_id);
+    if(!$productData){
+        redirect('products.php','No such product found');
+    }
+
+    $category_id = validate($_POST['category_id']);
+    $name = validate($_POST['name']);
+    $description = validate($_POST['description']);
+
+    $price = validate($_POST['price']);
+    $quantity = validate($_POST['quantity']);
+    $status = isset($_POST['status']) == true ? 1:0;
+
+    if($_FILES['image']['size'] > 0)
+    {
+        $path = "../assets/uploads/products";
+        $image_ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+
+        $filename = time().".".$image_ext;
+
+        move_uploaded_file($_FILES['image']['tmp_name'], $path."/".$filename);
+        $finalImage = "assets/uploads/products/".$filename;
+
+        $deleteImage = "../".$productData['data']['image'];
+        if(file_exists($deleteImage)){
+            unlink($deleteImage);
+        }
+
+    }
+    else
+    {
+        $finalImage = $productData['data']['image'];
+    }
+
+    $data = [
+        "category_id"=> $category_id,
+        'name' => $name,
+        'description'=> $description,
+        'price'=> $price,
+        'quantity'=> $quantity,
+        'image'=> $finalImage,
+        'status'=> $status
+    ];
+    $result = update('products', $product_id, $data);
+    if($result){
+        redirect("products-edit.php?id=".$product_id,"Product updated Successfully!.");
+    }else{
+        redirect("products-edit.php?id=".$product_id,"Something Went Wrong!.");
+    }
+}
+
+
+if(isset($_POST["saveCustomer"]))
+{
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phone = $_POST["phone"];
+    $status = isset($_POST["status"]) ? 1:0;
+
+    if($name != "")
+    {
+        
+        $emailCheck = mysqli_query($conn,"SELECT * FROM customers WHERE email='$email'");
+        if($emailCheck){
+            if(mysqli_num_rows($emailCheck) > 0)
+            {
+                redirect("customers.php","Email Already used by another user.");
+            }
+    }
+
+    $data = [
+        'name' => $name,
+        'email'=> $email,
+        'phone'=> $phone,
+        'status'=> $status	
+    ];
+    $result = insert('customers', $data);
+    if($result){
+        redirect("customers.php","Customer Created Successfully!.");
+    }else{
+        redirect("customers-create.php","Something Went Wrong!.");
+    }
+    
+    }else{
+        redirect("customers-create.php","Please field required fields.");
+    }
+}
+
+if(isset($_POST["updateCustomer"]))
+{
+    $customerId = validate($_POST['customerId']);
+
+    $name = validate($_POST['name']);
+    $email = validate($_POST['email']);
+    $phone = validate($_POST['phone']);
+    $status = isset($_POST['status']) == true ? 1:0;
+
+    if($name != "")
+    {
+        
+        $emailCheck = mysqli_query($conn,"SELECT * FROM customers WHERE email='$email' AND id!='$customerId'");
+        if($emailCheck){
+            if(mysqli_num_rows($emailCheck) > 0)
+            {
+                redirect("customers-edit.php?id=".$customerId,"Email Already used by another user.");
+            }
+        }
+
+    $data = [
+        'name' => $name,
+        'email'=> $email,
+        'phone'=> $phone,
+        'status'=> $status
+    ];
+    $result = update('customers', $customerId, $data);
+    if($result){
+        redirect("customers-edit.php?id=".$customerId,"Category updated Successfully!.");
+    }else{
+        redirect("customers-edit.php?id=".$customerId,"Something Went Wrong!.");
+    }
+    }
+else{
+    redirect("customers.php","Please fill required fields");
+}
+}
 ?>
